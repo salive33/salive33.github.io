@@ -75,7 +75,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/21/JAVA-%E6%97%A5%E5%B8%B8%E7%AC%94%E8%AE%B0-%E4%B8%80/">JAVA 日常笔记 一</a>
+      <a class="article-title" href="/2019/10/21/JAVA-%E6%97%A5%E5%B8%B8%E7%AC%94%E8%AE%B0-%E4%B8%80/">数据结构与算法相关知识记录</a>
     </h1>
   
 
@@ -83,7 +83,106 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>1.数据结构中，表结构一般用数组表示，双向链表结构一般用list实现，在指定位置插入新项或者删除已有项代价更小。</p>
+<p>2.位置标记——iterator  看 Java 迭代器：  迭代器是一种模式，可以使得序列类型的数据结构的遍历行为与被遍历的对象分离，即我们无需关心该序列的底层结构是什么样子的。只要拿到这个对象,使用迭代器就可以遍历这个对象的内部。</p>
+<p> 在Java中，可以对List集合进行如下几种方式的遍历：  第二种为迭代器遍历，第三种是for each循环。后面两种方式涉及到Java中的iterator和iterable对象 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">list.add(5);</span><br><span class="line">list.add(23);</span><br><span class="line">list.add(42);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1)</span><br><span class="line">for (int i = 0; i &lt; list.size(); i++) &#123;</span><br><span class="line">    System.out.print(list.get(i) + &quot;,&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2)</span><br><span class="line">Iterator it = list.iterator();</span><br><span class="line">while (it.hasNext()) &#123;</span><br><span class="line">    System.out.print(it.next() + &quot;,&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">3)</span><br><span class="line">for (Integer i : list) &#123;</span><br><span class="line">    System.out.print(i + &quot;,&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Iterable和Iterator"><a href="#Iterable和Iterator" class="headerlink" title="Iterable和Iterator"></a>Iterable和Iterator</h2><p> <code>Iterable</code>：实现这个接口的集合对象支持迭代，是可以迭代的；实现了这个可以配合<code>foreach</code>使用； </p>
+<p> <code>Iterator</code>： 迭代器，提供迭代机制的对象，具体如何迭代，都是Iterator接口规范的。通过UML图，可以看出Iterable接口是Java集合框架的顶级接口。 Iterator被称之为顺序遍历迭代器，jdk中默认对集合框架中数据结构做了实现。 </p>
+<h3 id="2-1Iterable接口有以下三个方法："><a href="#2-1Iterable接口有以下三个方法：" class="headerlink" title="2.1Iterable接口有以下三个方法："></a><code>2.1Iterable</code>接口有以下三个方法：</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Iterator iterator()</td>
+<td>返回一个Iterator对象</td>
+</tr>
+<tr>
+<td>void forEach(Consumer&lt;? super T&gt; action)</td>
+<td>对集合中的每个元素执行action动作<strong>JDK 1.8后新增</strong></td>
+</tr>
+<tr>
+<td>Spliterator spliterator()</td>
+<td>返回一个Spliterator对象<strong>JDK 1.8后新增</strong></td>
+</tr>
+</tbody></table>
+<h4 id="2-1-1-Iterable接口中的iterator-方法"><a href="#2-1-1-Iterable接口中的iterator-方法" class="headerlink" title="2.1.1 Iterable接口中的iterator() 方法"></a>2.1.1 Iterable接口中的iterator() 方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Iterator&lt;T&gt; iterator();</span><br></pre></td></tr></table></figure>
+
+<p>该接口主要是返回T类型的元素上的一个迭代器。下面再详细介绍Iterator。</p>
+<h4 id="2-1-2-Iterable接口中的forEach-方法"><a href="#2-1-2-Iterable接口中的forEach-方法" class="headerlink" title="2.1.2 Iterable接口中的forEach() 方法"></a>2.1.2 Iterable接口中的forEach() 方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">default void forEach(Consumer&lt;? super T&gt; action) &#123;</span><br><span class="line">        // 验证action是否为null，如果action为null，则抛出NullPointerException</span><br><span class="line">        Objects.requireNonNull(action);</span><br><span class="line">        for (T t : this) &#123;</span><br><span class="line">            action.accept(t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>该方法是循环输出，对内部元素进行遍历,并对元素进行指定的操作。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);</span><br><span class="line"> numbers.forEach(integer -&gt; System.out.println(integer));</span><br></pre></td></tr></table></figure>
+
+<p><strong>对源码注释翻译：</strong><br>对这个Iterable的每一个元素执行给定的动作指导所有元素都被处理或者动作抛出一个异常<br>为止。除非被实现类指定，动作将以迭代的顺序执行（如果一个迭代的顺序被指定。）被动作<br>抛出的异常将被传递给调用者</p>
+<h4 id="2-1-3-Iterable接口中的spliterator-方法"><a href="#2-1-3-Iterable接口中的spliterator-方法" class="headerlink" title="2.1.3 Iterable接口中的spliterator() 方法"></a>2.1.3 Iterable接口中的spliterator() 方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">default Spliterator&lt;T&gt; spliterator() &#123;</span><br><span class="line">    return Spliterators.spliteratorUnknownSize(iterator(), 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该方法提供了一个可以并行遍历元素的迭代器,以适应现在cpu多核时代并行遍历的需求。简单说：分割，增加并行处理能力</p>
+<p> Java容器中，所有的Collection子类会实现<code>Iteratable</code>接口以实现<code>foreach</code>功能，<code>Iteratable</code>接口的实现又依赖于实现了<code>Iterator</code>的内部类(参照LinkedList中listIterator()和descendingIterator()的JDK源码)。有的容器类会有多个实现<code>Iterator</code>接口的内部类，通过返回不同的迭代器实现不同的迭代方式。 </p>
+<h3 id="2-2Iterator接口有以下三个方法："><a href="#2-2Iterator接口有以下三个方法：" class="headerlink" title="2.2Iterator接口有以下三个方法："></a><code>2.2Iterator</code>接口有以下三个方法：</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean hasNext()</td>
+<td>每次next之前，先调用此方法探测是否迭代到终点</td>
+</tr>
+<tr>
+<td>E next()</td>
+<td>返回当前迭代元素，同时，迭代游标后移</td>
+</tr>
+<tr>
+<td>void remove()</td>
+<td>删除最近一次已近迭代出出去的那个元素；只有当next执行完后，才能调用remove函数</td>
+</tr>
+<tr>
+<td>void forEachRemaining(Consumer action)</td>
+<td><strong>JDK 1.8后新增默认方法</strong> 使用Lambda表达式来遍历集合元素</td>
+</tr>
+</tbody></table>
+<p>由源码图Iterator接口中定义了四个方法，分别是</p>
+<ul>
+<li>boolean hasNext()：如果被迭代遍历的集合还没有被遍历完，返回True</li>
+<li>Object next()：返回集合里面的下一个元素</li>
+<li>remove()：删除集合里面上一次next()方法返回的元素</li>
+<li>void forEachRemaining(Consumer action)：<strong>JDK 1.8后新增默认方法</strong> 使用Lambda表达式来遍历集合元素</li>
+</ul>
+<h4 id="2-2-1-Iterator接口中的forEachRemaining-方法"><a href="#2-2-1-Iterator接口中的forEachRemaining-方法" class="headerlink" title="2.2.1 Iterator接口中的forEachRemaining() 方法"></a>2.2.1 Iterator接口中的forEachRemaining() 方法</h4><p>在JDK1.8之后Iterator中增加的一个默认方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//使用方法</span><br><span class="line">List&lt;String&gt; arr=new ArrayList&lt;&gt;();</span><br><span class="line">arr.add(&quot;hello&quot;);</span><br><span class="line">arr.add((&quot;world&quot;));</span><br><span class="line">arr.iterator().forEachRemaining(str-&gt; System.out.println(str));</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-2-1-1-forEachRemaining-与forEach-方法之间的区别？"><a href="#2-2-1-1-forEachRemaining-与forEach-方法之间的区别？" class="headerlink" title="2.2.1.1 forEachRemaining()与forEach()方法之间的区别？"></a>2.2.1.1 forEachRemaining()与forEach()方法之间的区别？</h5><p><strong>forEachRemaining()源码：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">default void forEachRemaining(Consumer&lt;? super E&gt; action) &#123;</span><br><span class="line">    Objects.requireNonNull(action);</span><br><span class="line">    while (hasNext())</span><br><span class="line">        action.accept(next());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>forEach()源码：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">default void forEach(Consumer&lt;? super T&gt; action) &#123;</span><br><span class="line">    Objects.requireNonNull(action);</span><br><span class="line">    for (T t : this) &#123;</span><br><span class="line">        action.accept(t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过源码，我们可以看出他们之间的区别与联系。<br><strong>相同点：</strong></p>
+<ul>
+<li>都可以遍历集合</li>
+<li>都是接口的默认方法</li>
+<li>都是1.8版本引入的</li>
+</ul>
+<p><strong>区别：</strong></p>
+<ul>
+<li>forEachRemaining()方法内部是通过使用迭代器Iterator的所有元素，forEach()方法内部使用的是增强for循环。</li>
+<li>forEach()方法可以多次调用，forEachRemaining()方法第二次调用不会做任何操作，因为不会有下一个元素。</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
@@ -165,7 +264,7 @@
       <ul>
         
           <li>
-            <a href="/2019/10/21/JAVA-%E6%97%A5%E5%B8%B8%E7%AC%94%E8%AE%B0-%E4%B8%80/">JAVA 日常笔记 一</a>
+            <a href="/2019/10/21/JAVA-%E6%97%A5%E5%B8%B8%E7%AC%94%E8%AE%B0-%E4%B8%80/">数据结构与算法相关知识记录</a>
           </li>
         
           <li>
